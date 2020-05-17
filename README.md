@@ -3,9 +3,19 @@
 RBAC is Role Based Access Control System. Used to assign a role to user and remove a user from the role.
 And also to check access for a user for a particular resource and action type.
 
-## Getting Started
+### Background
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+In rbac project, there are 6 main entities listed below, which are defined in `src/model` package. This basically contains methods which are communicating with DB or fileSystem.
+1) `action` representing actionType
+2) `role` defining user role like Software Developer, Quality Assurance etc
+3) `resources` representing service or resource like DB, server for different services
+4) `user` for handling user signup and login flow
+5) `userRoleMapping` defining userId and roleId mapping. It can be many to many mapping. Here userId and roleId combination will be unique and is validated on its insertion.
+6) `roleResourceMapping` which represents for a particular role and actionType which resource it has access to. Here combination of roleId, resourceId and ActionId will be unique.
+
+And there is `src/manager` package, which contains rbacImplementation for different functionalities required by the system. It represents business logic layer, which calls methods of different modules as per functionality required.
+
+Also in this project, I have defined multiple modules like `userRoleMappingModule`, `roleResourceMappingModule`, `actionModule`, `resourceModule` which are initialized on app start in this call `managerModule := manager.New()`. Defining these modules has great advantage, as it makes our system flexible as in these modules, we can also initialize DB config, Cache config etc. And as it can change for different services, or unit testing inside a project, then we just need to initialize those in app start and pass as a parameter. There we don't need to change code in entities or business logic layer. For more information, this video can be referred https://www.youtube.com/watch?v=o_TH-Y78tt4.
 
 ### Prerequisites
 
